@@ -10,8 +10,13 @@ import type { Camera } from '../types/camera.js';
 import { worldGrid } from '../utils/geo.js';
 import { dedupeCameras } from './dedupe.js';
 
-const GRID_STEP_DEG = 20; // world split into 20deg tiles to page through source APIs
+const GRID_STEP_DEG = 30; // world split into 30deg tiles to page through source APIs
 const PER_TILE_LIMIT = 50; // Windy's v3 API rejects limit > 50
+const TILE_DELAY_MS = 400; // spaces out requests so a free-tier rate limit doesn't 500 every call
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 /**
  * Runs a full discovery pass: walks a grid over the whole world, asks every
@@ -40,6 +45,7 @@ export async function runDiscoveryPass(log: (msg: string) => void = console.log)
       } catch (err) {
         log(`[discovery] ${adapter.name} failed for tile ${JSON.stringify(tile)}: ${err}`);
       }
+      await sleep(TILE_DELAY_MS);
     }
     if (results.length > 0) {
       const deduped = dedupeCameras(results);

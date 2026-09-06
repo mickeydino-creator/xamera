@@ -121,16 +121,33 @@ function extractSingleWebcam(data: any): WindyWebcamRaw | null {
   return data?.result?.webcam ?? data?.result ?? data?.webcam ?? data ?? null;
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const MAX_RETRIES = 2;
+
+// The free-tier key appears to hit an internal rate limit under bursty
+// traffic, which the API reports as a generic 500 ("something broke")
+// rather than a 429 - retry those a couple of times with backoff before
+// giving up on the tile/lookup.
 async function windyFetch(path: string, params: Record<string, string> = {}): Promise<any> {
   const url = new URL(`${API_BASE}${path}`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url, {
-    headers: { 'x-windy-api-key': config.windyApiKey },
-  });
-  if (!res.ok) {
-    throw new Error(`Windy API error ${res.status}: ${await res.text()}`);
+
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const res = await fetch(url, {
+      headers: { 'x-windy-api-key': config.windyApiKey },
+    });
+    if (res.ok) return res.json();
+
+    const body = await res.text();
+    lastError = new Error(`Windy API error ${res.status}: ${body}`);
+    if (res.status < 500 || attempt === MAX_RETRIES) throw lastError;
+    await sleep(500 * 2 ** attempt);
   }
-  return res.json();
+  throw lastError;
 }
 
 interface GeocodeResult {
