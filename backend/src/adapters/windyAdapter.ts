@@ -158,6 +158,7 @@ async function geocode(query: string): Promise<GeocodeResult | null> {
 }
 
 const SHOW_FIELDS = 'webcams:image,location,player,url,category';
+const MAX_API_LIMIT = 50; // Windy's v3 API rejects a "limit" above this
 
 export const windyAdapter: WebcamSourceAdapter = {
   name: 'windy',
@@ -171,7 +172,7 @@ export const windyAdapter: WebcamSourceAdapter = {
     // Windy's bbox order is south,west,north,east - same order as our BBox.
     const data = await windyFetch('/webcams', {
       bbox: `${bbox.minLat},${bbox.minLon},${bbox.maxLat},${bbox.maxLon}`,
-      limit: String(limit),
+      limit: String(Math.min(limit, MAX_API_LIMIT)),
       show: SHOW_FIELDS,
     });
     return extractWebcamList(data)
@@ -186,7 +187,7 @@ export const windyAdapter: WebcamSourceAdapter = {
     const delta = 0.5; // ~55km box around the geocoded point
     const data = await windyFetch('/webcams', {
       bbox: `${point.lat - delta},${point.lon - delta},${point.lat + delta},${point.lon + delta}`,
-      limit: String(limit),
+      limit: String(Math.min(limit, MAX_API_LIMIT)),
       show: SHOW_FIELDS,
     });
     return extractWebcamList(data)

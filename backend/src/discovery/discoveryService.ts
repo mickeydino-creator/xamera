@@ -11,7 +11,7 @@ import { worldGrid } from '../utils/geo.js';
 import { dedupeCameras } from './dedupe.js';
 
 const GRID_STEP_DEG = 20; // world split into 20deg tiles to page through source APIs
-const PER_TILE_LIMIT = 200;
+const PER_TILE_LIMIT = 50; // Windy's v3 API rejects limit > 50
 
 /**
  * Runs a full discovery pass: walks a grid over the whole world, asks every
