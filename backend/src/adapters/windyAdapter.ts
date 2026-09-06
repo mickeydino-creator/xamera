@@ -174,7 +174,11 @@ async function geocode(query: string): Promise<GeocodeResult | null> {
   return { lat: Number(first.lat), lon: Number(first.lon) };
 }
 
-const SHOW_FIELDS = 'webcams:image,location,player,url,category';
+// Exactly the "show" value confirmed against a working reference client -
+// "category" was our own addition and is the prime suspect for the 500s
+// (limit validation happens before this is applied, so it went unnoticed
+// until the limit was fixed).
+const SHOW_FIELDS = 'webcams:image,location,player,url';
 const MAX_API_LIMIT = 50; // Windy's v3 API rejects a "limit" above this
 
 export const windyAdapter: WebcamSourceAdapter = {
