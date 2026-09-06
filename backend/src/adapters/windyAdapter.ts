@@ -84,8 +84,11 @@ function normalize(raw: WindyWebcamRaw): Camera {
   };
 }
 
-async function windyFetch(path: string, params: Record<string, string>): Promise<any> {
-  const url = new URL(`${API_BASE}${path}`);
+// The Windy Webcams v3 API takes its geographic filter as a literal path
+// segment under /list/ (e.g. /list/bbox=..., /list/nearby=..., /webcam/{id}),
+// not as a query-string parameter - a plain "/list?nearby=..." 404s.
+async function windyFetch(pathSegment: string, params: Record<string, string> = {}): Promise<any> {
+  const url = new URL(`${API_BASE}${pathSegment}`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
   const res = await fetch(url, {
     headers: { 'x-windy-api-key': config.windyApiKey },
@@ -94,6 +97,30 @@ async function windyFetch(path: string, params: Record<string, string>): Promise
     throw new Error(`Windy API error ${res.status}: ${await res.text()}`);
   }
   return res.json();
+}
+
+interface GeocodeResult {
+  lat: number;
+  lon: number;
+}
+
+// Windy's v3 API only filters by bbox/nearby/country/continent/webcam id, not
+// free text - so a text search first geocodes the query (OpenStreetMap
+// Nominatim, free and keyless) and then asks Windy for webcams near that
+// point.
+async function geocode(query: string): Promise<GeocodeResult | null> {
+  const url = new URL('https://nominatim.openstreetmap.org/search');
+  url.searchParams.set('q', query);
+  url.searchParams.set('format', 'json');
+  url.searchParams.set('limit', '1');
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'watch-the-world-app (contact: set OPENWEATHER_API_KEY env owner)' },
+  });
+  if (!res.ok) return null;
+  const results = (await res.json()) as any[];
+  const first = results[0];
+  if (!first) return null;
+  return { lat: Number(first.lat), lon: Number(first.lon) };
 }
 
 export const windyAdapter: WebcamSourceAdapter = {
@@ -105,31 +132,22 @@ export const windyAdapter: WebcamSourceAdapter = {
 
   async fetchByBBox(bbox: BBox, limit: number): Promise<Camera[]> {
     if (!this.isEnabled()) return [];
-    const data = await windyFetch('/list', {
-      'nearby': `${(bbox.minLat + bbox.maxLat) / 2},${(bbox.minLon + bbox.maxLon) / 2},${Math.ceil(
-        (bbox.maxLat - bbox.minLat) * 111
-      )}`,
-      limit: String(limit),
-      include: 'location,images,player,categories,urls',
-    });
+    // Path order for the bbox filter is south,west,north,east.
+    const data = await windyFetch(
+      `/list/bbox=${bbox.minLat},${bbox.minLon},${bbox.maxLat},${bbox.maxLon}`,
+      { limit: String(limit), show: 'webcams:location,image,player,category,urls' }
+    );
     const webcams: WindyWebcamRaw[] = data?.webcams ?? [];
-    return webcams
-      .filter(
-        (w) =>
-          w.location.latitude >= bbox.minLat &&
-          w.location.latitude <= bbox.maxLat &&
-          w.location.longitude >= bbox.minLon &&
-          w.location.longitude <= bbox.maxLon
-      )
-      .map(normalize);
+    return webcams.map(normalize);
   },
 
   async searchByQuery(query: string, limit: number): Promise<Camera[]> {
     if (!this.isEnabled()) return [];
-    const data = await windyFetch('/list', {
-      query,
+    const point = await geocode(query);
+    if (!point) return [];
+    const data = await windyFetch(`/list/nearby=${point.lat},${point.lon},50`, {
       limit: String(limit),
-      include: 'location,images,player,categories,urls',
+      show: 'webcams:location,image,player,category,urls',
     });
     const webcams: WindyWebcamRaw[] = data?.webcams ?? [];
     return webcams.map(normalize);
@@ -138,7 +156,7 @@ export const windyAdapter: WebcamSourceAdapter = {
   async checkStatus(sourceId: string): Promise<boolean> {
     if (!this.isEnabled()) return false;
     try {
-      const data = await windyFetch(`/webcam/${sourceId}`, { include: 'status' });
+      const data = await windyFetch(`/webcam/${sourceId}`, { show: 'webcams:status' });
       return data?.status === 'active';
     } catch {
       return false;
