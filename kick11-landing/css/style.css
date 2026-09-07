@@ -72,19 +72,12 @@ header{
 }
 .logo{
   display:inline-flex;
-  font-size:24px;
-  font-weight:900;
-  font-style:italic;
-  letter-spacing:1px;
-  color:var(--white);
-  transform:skewX(-8deg);
+  align-items:center;
 }
-.logo span{
-  color:var(--silver-dim);
-  background:linear-gradient(180deg,var(--silver) 0%,#8f8f8f 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+.logo img{
+  height:30px;
+  width:auto;
+  display:block;
 }
 nav ul{
   display:flex;
