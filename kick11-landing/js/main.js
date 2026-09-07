@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var WHATSAPP_NUMBER = '972XXXXXXXXX';
+  var WHATSAPP_NUMBER = '972553068678';
 
   /* ---------- Mobile nav ---------- */
   var navToggle = document.getElementById('navToggle');
