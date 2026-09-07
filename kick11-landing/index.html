@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KICK11 - ג'רסיות כדורגל פרימיום. סיפורים של כדורגל, לא רק בדים.">
+<title>KICK11 | סיפורים של כדורגל, לא רק בדים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">דלג לתוכן</a>
+
+<header>
+  <div class="container header-inner">
+    <a class="logo" href="#hero">KICK<span>11</span></a>
+    <nav id="siteNav">
+      <ul>
+        <li><a href="#hero">בית</a></li>
+        <li><a href="#jerseys">הקולקציה</a></li>
+        <li><a href="#story">הסיפור שלנו</a></li>
+        <li><a href="#cta">צור קשר</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="פתח תפריט" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero ph-gradient" id="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">KICK11 — ג'רסיות פרימיום</div>
+      <h1>כל ג'רסי היא <em>זיכרון</em>.<br>כל קנייה היא <em>רגע</em>.</h1>
+      <p class="hero-tagline">סיפורים של כדורגל, לא רק בדים.</p>
+      <div class="hero-actions">
+        <a href="#jerseys" class="btn">לצפייה בקולקציה</a>
+        <button class="btn btn-ghost open-modal" data-jersey="">בואו נדבר</button>
+      </div>
+    </div>
+    <a href="#jerseys" class="scroll-hint" aria-label="גללו למטה">
+      <span>גללו למטה</span>
+    </a>
+  </section>
+
+  <section id="jerseys">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">הקולקציה</div>
+        <h2>ג'רסיות נבחרות</h2>
+        <p>כל פריט מסופר בעצמו - עידן, רגע, וזיכרון שנשאר על הבד.</p>
+      </div>
+
+      <div class="carousel-wrap">
+        <div class="carousel" id="carousel" role="region" aria-label="קרוסלת ג'רסיות" tabindex="0">
+
+          <article class="jersey-card">
+            <div class="jersey-img ph-gradient">
+              <span class="badge badge-green">בזמנה</span>
+              <div class="jersey-num">7</div>
+            </div>
+            <div class="jersey-info">
+              <h3>לגנדה שחורה</h3>
+              <div class="jersey-era">עידן 1998–2000</div>
+              <div class="jersey-footer">
+                <span class="jersey-price">₪349</span>
+                <button class="dm-btn open-modal" data-jersey="לגנדה שחורה">שלח DM</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="jersey-card">
+            <div class="jersey-img ph-gradient">
+              <span class="badge badge-red">מיד</span>
+              <div class="jersey-num">10</div>
+            </div>
+            <div class="jersey-info">
+              <h3>המלך הכסוף</h3>
+              <div class="jersey-era">עידן 2005–2007</div>
+              <div class="jersey-footer">
+                <span class="jersey-price">₪429</span>
+                <button class="dm-btn open-modal" data-jersey="המלך הכסוף">שלח DM</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="jersey-card">
+            <div class="jersey-img ph-gradient">
+              <span class="badge badge-gray">תקרוב</span>
+              <div class="jersey-num">9</div>
+            </div>
+            <div class="jersey-info">
+              <h3>ליל הגמר</h3>
+              <div class="jersey-era">עידן 2010–2012</div>
+              <div class="jersey-footer">
+                <span class="jersey-price">₪389</span>
+                <button class="dm-btn open-modal" data-jersey="ליל הגמר">שלח DM</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="jersey-card">
+            <div class="jersey-img ph-gradient">
+              <span class="badge badge-green">בזמנה</span>
+              <div class="jersey-num">11</div>
+            </div>
+            <div class="jersey-info">
+              <h3>הרוח הלבנה</h3>
+              <div class="jersey-era">עידן 2016–2018</div>
+              <div class="jersey-footer">
+                <span class="jersey-price">₪369</span>
+                <button class="dm-btn open-modal" data-jersey="הרוח הלבנה">שלח DM</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prevBtn" aria-label="הקודם">›</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+          <button class="carousel-btn" id="nextBtn" aria-label="הבא">‹</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="story" class="story ph-gradient">
+    <div class="container story-inner">
+      <div class="section-eyebrow">הסיפור שלנו</div>
+      <h2>לא עוד גרסת מכירה. תיעוד של רגע.</h2>
+      <p>כל ג'רסי ב-KICK11 עוברת בדיקה, מסופרת ומוצגת עם ההקשר האמיתי שלה - השחקן, העונה, הרגע. אנחנו לא מוכרים בגדים, אנחנו שומרים היסטוריה.</p>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <div class="container">
+      <div class="section-eyebrow">מוגבל</div>
+      <h2>זהו שלך?</h2>
+      <p>כל ג'רסי יוצאת פעם אחת. אל תחכו שהיא תיעלם.</p>
+      <button class="btn btn-solid open-modal" data-jersey="">שלח DM</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">KICK<span>11</span></div>
+        <p>ברנד ג'רסיות כדורגל פרימיום. כל פריט מספר סיפור - לא רק לובש אותו.</p>
+      </div>
+      <div class="footer-col">
+        <h4>ניווט</h4>
+        <a href="#hero">בית</a>
+        <a href="#jerseys">הקולקציה</a>
+        <a href="#story">הסיפור שלנו</a>
+        <a href="#cta">צור קשר</a>
+      </div>
+      <div class="footer-col">
+        <h4>צור קשר</h4>
+        <a href="https://instagram.com/kick11" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://wa.me/972XXXXXXXXX" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 KICK11. כל הזכויות שמורות.</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="סגור">&times;</button>
+    <h3 id="modalTitle">בואו נדבר</h3>
+    <p>מתעניינים ב<span class="modal-jersey" id="modalJerseyName">אחת הג'רסיות</span>? שלחו לנו הודעה ונחזור אליכם.</p>
+    <div class="modal-links">
+      <a class="modal-link whatsapp" id="whatsappLink" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="modal-link insta" href="https://instagram.com/kick11" target="_blank" rel="noopener">Instagram DM</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
