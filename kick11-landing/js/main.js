@@ -29,7 +29,7 @@
     var dot = document.createElement('span');
     dot.setAttribute('role', 'button');
     dot.setAttribute('tabindex', '0');
-    dot.setAttribute('aria-label', 'עבור לג\'רסי ' + (i + 1));
+    dot.setAttribute('aria-label', 'עבור לחולצה ' + (i + 1));
     dot.addEventListener('click', function () { scrollToCard(i); });
     dot.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToCard(i); }
@@ -87,9 +87,9 @@
 
   function openModal(jersey) {
     lastFocused = document.activeElement;
-    var name = jersey || 'אחת הג\'רסיות';
+    var name = jersey || 'אחת החולצות';
     modalJerseyName.textContent = name;
-    var msg = jersey ? ('Hi, interested in ' + jersey) : 'Hi, I\'m interested in KICK11';
+    var msg = jersey ? ('היי, אני מתעניין/ת בחולצת "' + jersey + '"') : 'היי, אני מתעניין/ת בחולצות של KICK11';
     whatsappLink.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
     overlay.classList.add('active');
     document.getElementById('modalClose').focus();
